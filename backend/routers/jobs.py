@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
+from typing import Optional
 from backend.storage.db import create_job, get_job, list_jobs, set_runtime_provider
 from backend.worker.queue_worker import enqueue
 
@@ -10,6 +11,8 @@ class JobIn(BaseModel):
     stack: str = "python"
     spec: str
     max_iters: int | None = None
+    project_id: Optional[str] = None  # For conversational builds
+    mode: Optional[str] = "create"  # 'create' or 'modify'
 
 class ProviderIn(BaseModel):
     provider: str

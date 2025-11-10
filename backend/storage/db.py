@@ -57,6 +57,8 @@ def create_job(payload: dict):
         "created": time.time(),
         "report": None,
         "logs": [],  # Real-time build process logs
+        "project_id": payload.get("project_id"),  # Optional: for conversational builds
+        "mode": payload.get("mode", "create"),  # 'create' or 'modify'
     }
     with _db_lock:
         cur = _conn.cursor()
