@@ -3,6 +3,7 @@ import { listJobs, getJob } from '../api'
 import BuildProcessTab from '../components/BuildProcessTab'
 import JobsTab from '../components/JobsTab'
 import ConsoleTab from '../components/ConsoleTab'
+import ArtifactsTab from '../components/ArtifactsTab'
 
 export default function TabbedPane({ selectedJob, onSelectJob }) {
   const [activeTab, setActiveTab] = useState('build')
@@ -30,6 +31,12 @@ export default function TabbedPane({ selectedJob, onSelectJob }) {
           Build Process
         </button>
         <button 
+          className={`tab ${activeTab === 'artifacts' ? 'active' : ''}`}
+          onClick={() => setActiveTab('artifacts')}
+        >
+          Artifacts
+        </button>
+        <button 
           className={`tab ${activeTab === 'jobs' ? 'active' : ''}`}
           onClick={() => setActiveTab('jobs')}
         >
@@ -45,6 +52,7 @@ export default function TabbedPane({ selectedJob, onSelectJob }) {
 
       <div className="tab-content">
         {activeTab === 'build' && <BuildProcessTab selectedJob={selectedJob} />}
+        {activeTab === 'artifacts' && <ArtifactsTab selectedJob={selectedJob} />}
         {activeTab === 'jobs' && <JobsTab jobs={jobs} selectedJob={selectedJob} onSelectJob={onSelectJob} />}
         {activeTab === 'console' && <ConsoleTab selectedJob={selectedJob} />}
       </div>

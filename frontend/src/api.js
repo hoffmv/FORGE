@@ -78,3 +78,21 @@ export async function setOpenAIConfig(api_key) {
   }
   return r.json();
 }
+
+export async function listWorkspaceFiles(jobId) {
+  const r = await fetch(API(`/workspace/${jobId}/files`));
+  if (!r.ok) {
+    const error = await r.json().catch(() => ({ detail: 'Failed to list workspace files' }));
+    throw new Error(error.detail || 'Failed to list workspace files');
+  }
+  return r.json();
+}
+
+export async function readWorkspaceFile(jobId, filePath) {
+  const r = await fetch(API(`/workspace/${jobId}/files/${filePath}`));
+  if (!r.ok) {
+    const error = await r.json().catch(() => ({ detail: 'Failed to read file' }));
+    throw new Error(error.detail || 'Failed to read file');
+  }
+  return r.json();
+}

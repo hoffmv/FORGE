@@ -657,3 +657,147 @@ button:disabled {
 .activity-message {
   color: #ccc;
 }
+
+/* Artifacts Tab */
+.artifacts-container {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  height: 100%;
+  overflow: hidden;
+}
+
+.artifacts-sidebar {
+  border-right: 1px solid #2B2B2B;
+  display: flex;
+  flex-direction: column;
+  background: #0e0e0e;
+}
+
+.artifacts-header {
+  padding: 16px;
+  border-bottom: 1px solid #2B2B2B;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.artifacts-header h4 {
+  margin: 0;
+  font-size: 14px;
+  color: #FF6E00;
+}
+
+.file-count {
+  font-size: 12px;
+  color: #666;
+}
+
+.file-tree {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+  border-left: 3px solid transparent;
+  gap: 8px;
+}
+
+.file-item:hover {
+  background: #1a1a1a;
+}
+
+.file-item.selected {
+  background: #1a1a1a;
+  border-left-color: #FF6E00;
+}
+
+.file-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.file-name {
+  flex: 1;
+  font-size: 13px;
+  color: #eaeaea;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-size {
+  font-size: 11px;
+  color: #666;
+  flex-shrink: 0;
+}
+
+.artifacts-viewer {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #1C1C1C;
+}
+
+.viewer-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #666;
+}
+
+.viewer-placeholder .preview-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  opacity: 0.3;
+}
+
+.file-viewer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.viewer-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #2B2B2B;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0e0e0e;
+}
+
+.viewer-title {
+  font-size: 14px;
+  color: #FF6E00;
+  font-weight: 500;
+}
+
+.viewer-size {
+  font-size: 12px;
+  color: #666;
+}
+
+.code-content {
+  flex: 1;
+  overflow: auto;
+  padding: 20px;
+  background: #0e0e0e;
+  color: #eaeaea;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0;
+  white-space: pre;
+  tab-size: 2;
+}
