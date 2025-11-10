@@ -152,49 +152,102 @@ export default function ChatTab({ projectId, onJobCreated }) {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
+      {/* Input Area - Larger and More Prominent */}
       <form 
         onSubmit={handleSubmit}
         style={{ 
-          padding: '16px',
-          borderTop: '1px solid #2B2B2B',
-          background: '#1C1C1C'
+          padding: '20px',
+          borderTop: '2px solid #FF6E00',
+          background: '#1a1a1a'
         }}
       >
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <input
-            type="text"
+        <div style={{ marginBottom: '10px' }}>
+          <label style={{ 
+            display: 'block',
+            color: '#FF6E00',
+            fontSize: '13px',
+            fontWeight: 'bold',
+            marginBottom: '8px'
+          }}>
+            💬 Chat with FORGE
+          </label>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask FORGE to modify your project..."
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSubmit(e);
+              }
+            }}
+            placeholder="Ask FORGE to modify your project...&#10;&#10;Examples:&#10;• Add error handling to the API&#10;• Make the UI responsive&#10;• Add unit tests for the main function"
             disabled={loading}
+            rows={4}
             style={{
-              flex: 1,
-              padding: '12px 16px',
+              width: '100%',
+              padding: '14px 16px',
               background: '#2B2B2B',
-              border: '1px solid #444',
-              borderRadius: '6px',
+              border: '2px solid #444',
+              borderRadius: '8px',
               color: '#fff',
               fontSize: '14px',
-              outline: 'none'
+              outline: 'none',
+              resize: 'vertical',
+              fontFamily: 'inherit',
+              lineHeight: '1.5',
+              transition: 'border-color 0.2s'
             }}
+            onFocus={(e) => e.target.style.borderColor = '#FF6E00'}
+            onBlur={(e) => e.target.style.borderColor = '#444'}
           />
-          <button
-            type="submit"
-            disabled={loading || !input.trim()}
-            style={{
-              padding: '12px 24px',
-              background: loading || !input.trim() ? '#444' : '#FF6E00',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '6px',
-              fontWeight: 'bold',
-              cursor: loading || !input.trim() ? 'not-allowed' : 'pointer',
-              opacity: loading || !input.trim() ? 0.5 : 1
-            }}
-          >
-            {loading ? 'Sending...' : 'Send'}
-          </button>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ fontSize: '12px', color: '#888' }}>
+              Press <kbd style={{ 
+                background: '#2B2B2B', 
+                padding: '2px 6px', 
+                borderRadius: '3px',
+                border: '1px solid #444'
+              }}>Enter</kbd> to send, <kbd style={{ 
+                background: '#2B2B2B', 
+                padding: '2px 6px', 
+                borderRadius: '3px',
+                border: '1px solid #444'
+              }}>Shift+Enter</kbd> for new line
+            </div>
+            <button
+              type="submit"
+              disabled={loading || !input.trim()}
+              style={{
+                padding: '12px 32px',
+                background: loading || !input.trim() ? '#444' : '#FF6E00',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '8px',
+                fontWeight: 'bold',
+                fontSize: '14px',
+                cursor: loading || !input.trim() ? 'not-allowed' : 'pointer',
+                opacity: loading || !input.trim() ? 0.5 : 1,
+                transition: 'all 0.2s',
+                boxShadow: loading || !input.trim() ? 'none' : '0 2px 8px rgba(255, 110, 0, 0.3)'
+              }}
+              onMouseEnter={(e) => {
+                if (!loading && input.trim()) {
+                  e.target.style.background = '#ff8533';
+                  e.target.style.transform = 'translateY(-1px)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!loading && input.trim()) {
+                  e.target.style.background = '#FF6E00';
+                  e.target.style.transform = 'translateY(0)';
+                }
+              }}
+            >
+              {loading ? '⏳ Sending...' : '🚀 Send Message'}
+            </button>
+          </div>
         </div>
       </form>
     </div>
