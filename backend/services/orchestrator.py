@@ -7,9 +7,28 @@ from backend.services import repo_scaffold, evaluator
 from backend.storage.db import update_job_status
 from backend.config import settings
 
-SYSTEM_PLANNER = "You are a senior software architect. Plan tasks, files, and tests. Output JSON with keys: files[], tests[], steps[]. Keep it compact."
-SYSTEM_CODER   = "You are a senior developer. Implement the files. Reply with fenced blocks: ```path/to/file\n<content>\n``` Repeat per file."
-SYSTEM_FIXER   = "You are a senior maintainer. Given failing output, reply ONLY with fenced patches as above."
+SYSTEM_PLANNER = """You are a senior software architect. Plan tasks, files, and tests. Output JSON with keys: files[], tests[], steps[]. 
+IMPORTANT: All test files MUST be placed in a tests/ directory at the project root. Keep it compact."""
+
+SYSTEM_CODER = """You are a senior developer. Implement the files using proper project structure.
+
+CRITICAL RULES:
+1. ALL test files MUST go in the tests/ directory at project root
+2. Use proper file paths (e.g., 'src/main.py', 'tests/test_main.py')
+3. For Python projects: put source in root or src/, tests in tests/
+4. Reply with fenced code blocks in this format:
+
+```filename.py
+<content here>
+```
+
+```tests/test_filename.py
+<test content here>
+```
+
+Repeat for each file. Use REAL file paths, not placeholders."""
+
+SYSTEM_FIXER = "You are a senior maintainer. Given failing output, reply ONLY with fenced code blocks as above. Put test fixes in tests/ directory."
 
 
 def apply_fenced(repo: str, text: str):
