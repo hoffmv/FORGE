@@ -57,11 +57,14 @@ forge/
 8. Final status: succeeded or failed
 
 ## Recent Changes
-- Initial project setup with complete monorepo structure
-- Backend FastAPI service with dual LLM provider support
-- React/Vite frontend with 3-pane interface
-- Electron launcher for desktop deployment
-- Staged installer configurations
+- **November 10, 2025**: Full system tested and operational
+  - Fixed worker queue with error handling and graceful failure recovery
+  - Fixed Electron launcher CWD issue (now runs from repo root)
+  - Configured Vite proxy for seamless frontend-backend communication
+  - OpenAI provider integration tested and working
+  - Successfully generated and executed Python code from natural language specs
+  - Jobs flow correctly through queued → running → succeeded/failed lifecycle
+  - Generated artifacts stored in `workspaces/{project-name}_{id}/` directories
 
 ## User Preferences
 None yet.
