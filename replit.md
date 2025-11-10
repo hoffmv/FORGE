@@ -70,6 +70,14 @@ forge/
 8. Final status: succeeded or failed
 
 ## Recent Changes
+- **November 10, 2025 (Phase 4)**: Real-Time Build Process Visibility
+  - Added streaming logs to orchestrator showing each step: planning, coding, testing
+  - Preview pane now displays chain-of-thought build process in real-time
+  - Shows plan JSON, generated files with full content, and test results
+  - Auto-scrolls to latest activity with fade-in animations
+  - Color-coded log types: status (ember), plan (blue), files (green), tests (red/green)
+  - Users can now see EXACTLY what FORGE is doing and what it generated
+
 - **November 10, 2025 (Phase 3)**: Fixed Code Generation and Testing
   - Fixed SYSTEM_CODER and SYSTEM_PLANNER prompts to enforce proper directory structure
   - Tests now correctly placed in tests/ directory (was generating in random paths)
