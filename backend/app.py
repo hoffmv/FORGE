@@ -1,8 +1,20 @@
+import threading
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.routers import health, jobs
+from backend.worker.queue_worker import main_loop
 
-app = FastAPI(title="FORGE")
+worker_thread = None
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global worker_thread
+    worker_thread = threading.Thread(target=main_loop, daemon=True)
+    worker_thread.start()
+    yield
+    
+app = FastAPI(title="FORGE", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware, 
     allow_origins=["*"], 

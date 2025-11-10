@@ -29,6 +29,8 @@ def create_job(payload: dict):
 
 def update_job_status(job_id: str, status: str, report: dict | None = None):
     j = get_job(job_id)
+    if j is None:
+        raise ValueError(f"Job {job_id} not found")
     j["status"] = status
     if report is not None:
         j["report"] = report

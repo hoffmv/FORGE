@@ -18,4 +18,5 @@ class OpenAIProvider(LLM):
             max_tokens=max_tokens,
             temperature=0.2,
         )
-        return response.choices[0].message.content.strip()
+        content = response.choices[0].message.content or ""
+        return content.strip()

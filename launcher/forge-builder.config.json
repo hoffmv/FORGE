@@ -1,0 +1,6 @@
+{
+  "backendPort": 8000,
+  "frontendPort": 5000,
+  "backendPath": "../backend",
+  "frontendPath": "../frontend"
+}
