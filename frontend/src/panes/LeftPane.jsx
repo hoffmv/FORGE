@@ -10,10 +10,18 @@ export default function LeftPane({ onOpenSettings, onJobSubmitted, selectedProje
   const [activity, setActivity] = useState([])
   const [projects, setProjects] = useState([])
   const [mode, setMode] = useState('new') // 'new' or 'existing'
+  const [buildFormCollapsed, setBuildFormCollapsed] = useState(false)
 
   useEffect(() => {
     loadProjects()
   }, [])
+
+  // Auto-collapse build form when a project is selected
+  useEffect(() => {
+    if (selectedProject) {
+      setBuildFormCollapsed(true)
+    }
+  }, [selectedProject])
 
   async function loadProjects() {
     try {
@@ -88,9 +96,9 @@ export default function LeftPane({ onOpenSettings, onJobSubmitted, selectedProje
       </div>
       <p className="tagline">Where Concepts Become Systems</p>
       
-      {/* Projects List */}
+      {/* Projects List - Always visible */}
       {projects.length > 0 && (
-        <div className="projects-panel" style={{ marginBottom: '20px' }}>
+        <div className="projects-panel" style={{ marginBottom: '15px' }}>
           <h3>Projects</h3>
           <div style={{ 
             maxHeight: '120px', 
@@ -137,87 +145,123 @@ export default function LeftPane({ onOpenSettings, onJobSubmitted, selectedProje
         </div>
       )}
       
-      {/* Build Form */}
-      <div style={{ marginBottom: '12px', display: 'flex', gap: '8px' }}>
-        <button
-          onClick={() => {
-            setMode('new')
-            if (onSelectProject) {
-              onSelectProject(null)
-            }
-          }}
+      {/* Collapsible Build Form Section */}
+      <div style={{ 
+        marginBottom: '15px',
+        border: '1px solid #444',
+        borderRadius: '6px',
+        overflow: 'hidden'
+      }}>
+        {/* Collapse/Expand Header */}
+        <div 
+          onClick={() => setBuildFormCollapsed(!buildFormCollapsed)}
           style={{
-            flex: 1,
-            padding: '8px',
-            background: mode === 'new' ? '#FF6E00' : '#444',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '4px',
+            padding: '12px 15px',
+            background: '#2B2B2B',
             cursor: 'pointer',
-            fontSize: '12px',
-            fontWeight: 'bold'
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            borderBottom: buildFormCollapsed ? 'none' : '1px solid #444'
           }}
         >
-          New Project
-        </button>
-        <button
-          onClick={() => setMode('existing')}
-          disabled={!selectedProject}
-          style={{
-            flex: 1,
-            padding: '8px',
-            background: mode === 'existing' ? '#FF6E00' : '#444',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: selectedProject ? 'pointer' : 'not-allowed',
-            fontSize: '12px',
-            fontWeight: 'bold',
-            opacity: selectedProject ? 1 : 0.5
-          }}
-        >
-          Modify Selected
-        </button>
+          <h3 style={{ margin: 0, fontSize: '14px', color: '#FF6E00' }}>
+            {buildFormCollapsed ? '⚡ Build Settings' : '🔧 Build Settings'}
+          </h3>
+          <span style={{ color: '#888', fontSize: '18px' }}>
+            {buildFormCollapsed ? '▼' : '▲'}
+          </span>
+        </div>
+
+        {/* Collapsible Content */}
+        {!buildFormCollapsed && (
+          <div style={{ padding: '15px', background: '#1a1a1a' }}>
+            <div style={{ marginBottom: '12px', display: 'flex', gap: '8px' }}>
+              <button
+                onClick={() => {
+                  setMode('new')
+                  if (onSelectProject) {
+                    onSelectProject(null)
+                  }
+                }}
+                style={{
+                  flex: 1,
+                  padding: '8px',
+                  background: mode === 'new' ? '#FF6E00' : '#444',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontSize: '12px',
+                  fontWeight: 'bold'
+                }}
+              >
+                New Project
+              </button>
+              <button
+                onClick={() => setMode('existing')}
+                disabled={!selectedProject}
+                style={{
+                  flex: 1,
+                  padding: '8px',
+                  background: mode === 'existing' ? '#FF6E00' : '#444',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: selectedProject ? 'pointer' : 'not-allowed',
+                  fontSize: '12px',
+                  fontWeight: 'bold',
+                  opacity: selectedProject ? 1 : 0.5
+                }}
+              >
+                Modify Selected
+              </button>
+            </div>
+            
+            <h4 style={{ marginBottom: '8px', fontSize: '13px' }}>
+              {mode === 'new' ? 'New Project' : 'Modify Project'}
+            </h4>
+            
+            {mode === 'new' && (
+              <>
+                <label style={{ fontSize: '12px' }}>Project Name</label>
+                <input
+                  value={project_name}
+                  onChange={e => setName(e.target.value)}
+                  placeholder="Project name"
+                />
+              </>
+            )}
+            
+            <label style={{ fontSize: '12px' }}>
+              {mode === 'new' ? 'Specification' : 'Modification Request'}
+            </label>
+            <textarea
+              value={spec}
+              onChange={e => setSpec(e.target.value)}
+              rows={mode === 'new' ? 8 : 6}
+              placeholder={mode === 'new' ? 'Describe what you want to build...' : 'Describe what you want to change...'}
+            />
+            
+            <button onClick={run} disabled={submitting || (mode === 'existing' && !selectedProject)}>
+              {submitting ? 'Submitting...' : mode === 'new' ? 'Create Project' : 'Apply Changes'}
+            </button>
+            
+            <div className="toggle" style={{ marginTop: '12px' }}>
+              <label style={{ fontSize: '12px' }}>LLM Provider:</label>
+              <select value={provider} onChange={e => setProvRemote(e.target.value)}>
+                <option>AUTO</option>
+                <option>LMSTUDIO</option>
+                <option>OPENAI</option>
+              </select>
+            </div>
+            
+            <p className="hint" style={{ fontSize: '11px', marginTop: '8px' }}>
+              AUTO prefers LM Studio in LOCAL mode, OpenAI in CLOUD mode.
+            </p>
+          </div>
+        )}
       </div>
-      
-      <h3>{mode === 'new' ? 'New Project' : 'Modify Project'}</h3>
-      
-      {mode === 'new' && (
-        <>
-          <label>Project Name</label>
-          <input
-            value={project_name}
-            onChange={e => setName(e.target.value)}
-            placeholder="Project name"
-          />
-        </>
-      )}
-      
-      <label>{mode === 'new' ? 'Specification' : 'Modification Request'}</label>
-      <textarea
-        value={spec}
-        onChange={e => setSpec(e.target.value)}
-        rows={mode === 'new' ? 14 : 8}
-        placeholder={mode === 'new' ? 'Describe what you want to build...' : 'Describe what you want to change...'}
-      />
-      
-      <button onClick={run} disabled={submitting || (mode === 'existing' && !selectedProject)}>
-        {submitting ? 'Submitting...' : mode === 'new' ? 'Create Project' : 'Apply Changes'}
-      </button>
-      
-      <div className="toggle">
-        <label>LLM Provider:</label>
-        <select value={provider} onChange={e => setProvRemote(e.target.value)}>
-          <option>AUTO</option>
-          <option>LMSTUDIO</option>
-          <option>OPENAI</option>
-        </select>
-      </div>
-      
-      <p className="hint">
-        AUTO prefers LM Studio in LOCAL mode, OpenAI in CLOUD mode.
-        OPENAI requires API key.
-      </p>
 
       {activity.length > 0 && (
         <div className="activity-feed">
@@ -233,26 +277,44 @@ export default function LeftPane({ onOpenSettings, onJobSubmitted, selectedProje
         </div>
       )}
 
-      {/* Chat Interface - Always visible at bottom */}
+      {/* Chat Interface - Expanded when project is selected */}
       <div style={{ 
-        marginTop: '20px', 
-        borderTop: '2px solid #FF6E00',
-        paddingTop: '15px'
+        flex: selectedProject ? 1 : 0,
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: selectedProject ? '400px' : 'auto',
+        border: selectedProject ? '2px solid #FF6E00' : '1px solid #444',
+        borderRadius: '8px',
+        overflow: 'hidden',
+        transition: 'all 0.3s ease'
       }}>
-        <h3 style={{ marginBottom: '10px' }}>Conversational Mode</h3>
+        <div style={{
+          padding: '12px 15px',
+          background: selectedProject ? '#FF6E00' : '#2B2B2B',
+          borderBottom: '1px solid rgba(0,0,0,0.2)',
+          fontWeight: 'bold',
+          fontSize: '13px',
+          color: '#fff'
+        }}>
+          💬 Conversational Mode
+        </div>
+        
         {selectedProject ? (
-          <ChatTab 
-            projectId={selectedProject.id} 
-            onJobCreated={onJobSubmitted}
-          />
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+            <ChatTab 
+              projectId={selectedProject.id} 
+              onJobCreated={onJobSubmitted}
+            />
+          </div>
         ) : (
           <div style={{ 
-            padding: '20px', 
+            padding: '30px 20px', 
             textAlign: 'center', 
             color: '#888',
             fontSize: '13px'
           }}>
-            Select a project above or create a new one to start chatting
+            <div style={{ fontSize: '32px', marginBottom: '12px' }}>💬</div>
+            <div>Select a project above to start chatting with FORGE</div>
           </div>
         )}
       </div>
