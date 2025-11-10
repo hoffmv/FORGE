@@ -2,6 +2,8 @@
 
 A production-ready code generation workbench that turns natural language specifications into working code repositories with automated testing and fixing.
 
+**GitHub Repository**: https://github.com/hoffmv/forge
+
 ## Overview
 
 FORGE is a Replit-style application with a 3-pane interface that:
