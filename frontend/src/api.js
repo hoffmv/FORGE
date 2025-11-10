@@ -1,4 +1,9 @@
-const API = (path) => `/api${path}`;
+const API = (path) => {
+  if (window.location.protocol === 'file:') {
+    return `http://localhost:8000${path}`;
+  }
+  return `/api${path}`;
+};
 
 export async function submitJob(payload) {
   const r = await fetch(API('/jobs'), {
