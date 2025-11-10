@@ -30,7 +30,7 @@ forge/
 
 ### Frontend Components
 - **Left Pane**: Projects list, Build form (New/Modify toggle), and Conversational Chat (always visible at bottom)
-- **Right Pane**: Tabbed interface with Build Process, Artifacts, Jobs, and Console viewers
+- **Right Pane**: Tabbed interface with Build Process, Artifacts, Jobs, Console, and Help viewers
 
 ## Branding
 - **Name**: FORGE — Where Concepts Become Systems
@@ -69,6 +69,17 @@ forge/
 8. Final status: succeeded or failed
 
 ## Recent Changes
+- **November 10, 2025 (Phase 8)**: Interactive User Manual & Help System ✅ COMPLETE
+  - Created comprehensive USER_MANUAL.md covering all features and workflows
+  - Added Help tab with three modes: Browse Manual, Search Manual, and Ask AI
+  - Browse mode displays full manual with markdown rendering and syntax highlighting
+  - Search mode enables keyword search across manual sections with relevance ranking
+  - Ask AI mode provides LLM-powered Q&A about FORGE usage and features
+  - Backend /help endpoints: /manual (full content), /search (keyword search), /ask (AI assistant)
+  - AI assistant uses complete manual as context to answer user questions intelligently
+  - Manual covers: getting started, project creation, conversational mode, file upload, export, settings, troubleshooting, and FAQ
+  - Users can now get instant help without leaving the application
+
 - **November 10, 2025 (Phase 7)**: Conversational Iteration System ✅ COMPLETE
   - Added projects table and messages table for persistent conversation tracking
   - Created conversational orchestrator with 'create' and 'modify' modes

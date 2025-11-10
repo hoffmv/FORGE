@@ -209,3 +209,41 @@ export async function getWorkspacePath(jobId) {
   
   return r.json();
 }
+
+// Help/Manual
+export async function getUserManual() {
+  const r = await fetch(API('/help/manual'));
+  
+  if (!r.ok) {
+    const error = await r.json().catch(() => ({ detail: 'Failed to get user manual' }));
+    throw new Error(error.detail || 'Failed to get user manual');
+  }
+  
+  return r.json();
+}
+
+export async function askHelpQuestion(question) {
+  const r = await fetch(API('/help/ask'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ question })
+  });
+  
+  if (!r.ok) {
+    const error = await r.json().catch(() => ({ detail: 'Failed to get help answer' }));
+    throw new Error(error.detail || 'Failed to get help answer');
+  }
+  
+  return r.json();
+}
+
+export async function searchManual(query) {
+  const r = await fetch(API(`/help/search?q=${encodeURIComponent(query)}`));
+  
+  if (!r.ok) {
+    const error = await r.json().catch(() => ({ detail: 'Failed to search manual' }));
+    throw new Error(error.detail || 'Failed to search manual');
+  }
+  
+  return r.json();
+}

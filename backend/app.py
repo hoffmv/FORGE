@@ -2,7 +2,7 @@ import threading
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.routers import health, jobs, settings, workspace, projects, upload, export
+from backend.routers import health, jobs, settings, workspace, projects, upload, export, help
 from backend.worker.queue_worker import main_loop
 
 worker_thread = None
@@ -28,3 +28,4 @@ app.include_router(workspace.router, prefix="/workspace", tags=["workspace"])
 app.include_router(projects.router, prefix="/projects", tags=["projects"])
 app.include_router(upload.router, prefix="/upload", tags=["upload"])
 app.include_router(export.router, prefix="/export", tags=["export"])
+app.include_router(help.router, prefix="/help", tags=["help"])

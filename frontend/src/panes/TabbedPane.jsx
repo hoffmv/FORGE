@@ -4,6 +4,7 @@ import BuildProcessTab from '../components/BuildProcessTab'
 import JobsTab from '../components/JobsTab'
 import ConsoleTab from '../components/ConsoleTab'
 import ArtifactsTab from '../components/ArtifactsTab'
+import HelpTab from '../components/HelpTab'
 
 export default function TabbedPane({ selectedJob, onSelectJob }) {
   const [activeTab, setActiveTab] = useState('build')
@@ -48,6 +49,12 @@ export default function TabbedPane({ selectedJob, onSelectJob }) {
         >
           Console
         </button>
+        <button 
+          className={`tab ${activeTab === 'help' ? 'active' : ''}`}
+          onClick={() => setActiveTab('help')}
+        >
+          📖 Help
+        </button>
       </div>
 
       <div className="tab-content">
@@ -55,6 +62,7 @@ export default function TabbedPane({ selectedJob, onSelectJob }) {
         {activeTab === 'artifacts' && <ArtifactsTab selectedJob={selectedJob} />}
         {activeTab === 'jobs' && <JobsTab jobs={jobs} selectedJob={selectedJob} onSelectJob={onSelectJob} />}
         {activeTab === 'console' && <ConsoleTab selectedJob={selectedJob} />}
+        {activeTab === 'help' && <HelpTab />}
       </div>
     </div>
   )
