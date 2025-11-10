@@ -40,12 +40,26 @@ function startBackend() {
   } else {
     // Production mode: run frozen backend executable
     const backendExe = getBackendPath()
-    console.log(`Starting backend from: ${backendExe}`)
+    const fs = require('fs')
+    console.log(`=== BACKEND STARTUP DEBUG ===`)
+    console.log(`Backend exe path: ${backendExe}`)
+    console.log(`Backend exe exists: ${fs.existsSync(backendExe)}`)
+    console.log(`Resource path: ${process.resourcesPath}`)
+    console.log(`============================`)
+    
+    if (!fs.existsSync(backendExe)) {
+      console.error(`ERROR: Backend executable not found at ${backendExe}`)
+      return
+    }
+    
     backendProcess = spawn(backendExe, [], { shell: false })
     backendProcess.stdout.on('data', d => console.log(`[backend] ${d}`))
     backendProcess.stderr.on('data', d => console.error(`[backend] ${d}`))
     backendProcess.on('error', err => {
       console.error('Failed to start backend:', err)
+    })
+    backendProcess.on('exit', (code, signal) => {
+      console.error(`Backend process exited with code ${code}, signal ${signal}`)
     })
   }
 }
@@ -70,6 +84,9 @@ function createWindow() {
       contextIsolation: true
     }
   })
+
+  // Always open DevTools to debug issues
+  mainWindow.webContents.openDevTools()
 
   if (isDev) {
     // Development mode: load from dev server
