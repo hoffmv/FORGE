@@ -70,6 +70,13 @@ forge/
 8. Final status: succeeded or failed
 
 ## Recent Changes
+- **November 10, 2025 (Phase 3)**: Fixed Code Generation and Testing
+  - Fixed SYSTEM_CODER and SYSTEM_PLANNER prompts to enforce proper directory structure
+  - Tests now correctly placed in tests/ directory (was generating in random paths)
+  - Verifier now successfully finds and runs pytest tests
+  - Tested with real spec: CLI printing "FORGE" with pytest - succeeded with "1 passed"
+  - Workspaces now properly created in AppData directory
+
 - **November 10, 2025 (Phase 2)**: Settings UI and Windows Installer
   - Added Settings modal with gear icon for configuring LM Studio URL and OpenAI API key
   - Implemented encrypted settings storage with Fernet cipher (API keys encrypted at rest)
